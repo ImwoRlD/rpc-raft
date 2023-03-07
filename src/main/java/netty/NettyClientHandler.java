@@ -1,4 +1,4 @@
-package netty.handler;
+package netty;
 
 import io.netty.channel.ChannelInboundHandlerAdapter;
 

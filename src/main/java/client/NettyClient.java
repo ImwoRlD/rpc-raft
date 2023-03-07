@@ -12,7 +12,7 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import netty.handler.NettyClientHandler;
+import netty.NettyClientHandler;
 import transport.RpcRequestTransport;
 import utils.ChannelProvider;
 import utils.SingletonFactory;
@@ -30,7 +30,7 @@ public class NettyClient implements RpcRequestTransport {
     private final ChannelProvider channelProvider;
     public NettyClient(){
         eventLoopGroup = new NioEventLoopGroup();
-        channelProvider = SingletonFactory.getInstance(ChannelProvider.class)
+        channelProvider = SingletonFactory.getInstance(ChannelProvider.class);
         bootstrap = new Bootstrap();
         bootstrap.group(eventLoopGroup)
                 .channel(NioSocketChannel.class)

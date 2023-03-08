@@ -9,8 +9,11 @@ import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import netty.NettyServerHandler;
+import netty.codec.RpcMessageEncoder;
 import netty.handler.LoggingHandler;
 import netty.handler.TemplateHandler;
+import utils.ThreadPoolFactoryUtil;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -30,7 +33,7 @@ public class NettyServer {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         DefaultEventExecutorGroup serviceHandlerGroup = new DefaultEventExecutorGroup(
                 Runtime.getRuntime().availableProcessors()*2,
-                ThreadPoolFac
+                ThreadPoolFactoryUtil.createThreadFactory("service-handler-group",false);
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup,workerGroup)
@@ -45,7 +48,7 @@ public class NettyServer {
                             p.addLast(new IdleStateHandler(30,0,0, TimeUnit.SECONDS));
                             p.addLast(new RpcMessageEncoder());
                             p.addLast(new RpcMessageDecoder());
-                            p.addLast(,)
+                            p.addLast(serviceHandlerGroup,new NettyServerHandler());
                             //具体业务逻辑
                             //p.addLast
                         }

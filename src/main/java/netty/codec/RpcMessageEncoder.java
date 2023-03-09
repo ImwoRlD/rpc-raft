@@ -2,6 +2,7 @@ package netty.codec;
 
 import constants.RpcConstants;
 import dto.RpcMessage;
+import enums.SerializationTypeEnum;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -47,7 +48,7 @@ public class RpcMessageEncoder extends MessageToByteEncoder<RpcMessage> {
             int fullLength = RpcConstants.HEAD_LENGTH;
             if (messageType != RpcConstants.HEARTBEAT_REQUEST_TYPE &&messageType!=RpcConstants.HEARTBEAT_RESPONSE_TYPE){
                 //TODO 通过序列化方式 序列化 内容
-
+                String codecName = SerializationTypeEnum.getName(rpcMessage.getCodec());
                 //TODO 通过压缩方式压缩 rpcmessage
 
 
@@ -62,6 +63,8 @@ public class RpcMessageEncoder extends MessageToByteEncoder<RpcMessage> {
             out.writerIndex(writeIndex - fullLength + RpcConstants.MAGIC_NUMBER.length + 1);
             out.writeInt(fullLength);
             out.writerIndex(writeIndex);
+        }finally {
+
         }
     }
 }

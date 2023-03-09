@@ -40,6 +40,7 @@ public class NettyClient implements RpcRequestTransport {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         ChannelPipeline p = socketChannel.pipeline();
+                        //TODO idlHander 考虑是否删除
                         p.addLast(new IdleStateHandler(0,5,0, TimeUnit.SECONDS));
                         p.addLast(new NettyClientHandler());
                     }
@@ -52,7 +53,7 @@ public class NettyClient implements RpcRequestTransport {
             @Override
             public void operationComplete(ChannelFuture channelFuture) throws Exception {
                 if (channelFuture.isSuccess()){
-                    //log
+                    log.info("The client has connected [{}] successful!",inetSocketAddress.toString());
                     completableFuture.complete(channelFuture.channel());
                 }else{
                     throw new IllegalStateException();
@@ -67,7 +68,7 @@ public class NettyClient implements RpcRequestTransport {
         CompletableFuture<RpcResponse<Object>> resultFuture = new CompletableFuture<>();
         //TODO get from register
 
-        InetSocketAddress inetSocketAddress = new InetSocketAddress("127.0.0.1",8888);
+        InetSocketAddress inetSocketAddress = new InetSocketAddress("192.168.178.56",9998);
 
         Channel channel = getChannel(inetSocketAddress);
         if (channel.isActive()){
